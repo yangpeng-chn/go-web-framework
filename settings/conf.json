@@ -1,0 +1,6 @@
+{
+	"LogIndent": true,
+	"EnableHTTPS": false,
+	"Cert": "certs/server.crt",
+	"Key": "certs/server.key"
+}
