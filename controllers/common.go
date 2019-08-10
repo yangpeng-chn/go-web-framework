@@ -17,14 +17,14 @@ type Result struct {
 }
 
 func SetResponseHeaders(w http.ResponseWriter, r *http.Request) {
-	if origin := r.Header.Get("Origin"); origin != "" {
-		w.Header().Set("Access-Control-Allow-Origin", origin)
-	}
-
+	// if origin := r.Header.Get("Origin"); origin != "" {
+	// 	w.Header().Set("Access-Control-Allow-Origin", origin)
+	// }
 	// w.Header().Set("Content-Type", "text/plain;charset=UTF-8")
 	// w.Header().Set("Access-Control-Allow-Methods", "POST, GET, HEAD")
 	// w.Header().Set("Access-Control-Allow-Headers", "Accept, Accept-Language, Content-Language, Content-Type")
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json;charset=UTF-8")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Accept, Accept-Language, Content-Language, Content-Type")
