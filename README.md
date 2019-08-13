@@ -74,7 +74,7 @@ git clone https://github.com/yangpeng-chn/go-web-framework.git
 
 ### 6. Use go test (HTTP)
 
-	$ go test tests/article-selfserve_test.go
+	$ go test tests/article_selfserve_test.go
 	ok      command-line-arguments  0.020s
 	
 	$ go run main.go
