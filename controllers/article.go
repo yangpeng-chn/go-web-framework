@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
+	// "github.com/gorilla/mux"
 	"github.com/yangpeng-chn/go-web-framework/models"
 	"github.com/yangpeng-chn/go-web-framework/settings"
 	"net/http"
+	"path"
 	"strconv"
 )
 
@@ -61,8 +62,9 @@ func GetArticleHandler(w http.ResponseWriter, r *http.Request) {
 	var responseCode int = http.StatusBadRequest
 	var article *models.Article
 
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
+	// vars := mux.Vars(r)
+	// id, err := strconv.Atoi(vars["id"])
+	id, err := strconv.Atoi(path.Base(r.URL.Path)) //to use std pkg, /articles/1, id=1
 	if err != nil {
 		goto Error
 	}
@@ -92,8 +94,10 @@ func UpdateArticleHandler(w http.ResponseWriter, r *http.Request) {
 	var responseCode int = http.StatusBadRequest
 	var article models.Article
 	var body []byte
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
+
+	// vars := mux.Vars(r)
+	// id, err := strconv.Atoi(vars["id"])
+	id, err := strconv.Atoi(path.Base(r.URL.Path)) //to use std pkg
 	if err != nil {
 		goto Error
 	}
@@ -123,8 +127,9 @@ func DeleteArticleHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
 	var responseCode int = http.StatusBadRequest
 
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
+	// vars := mux.Vars(r)
+	// id, err := strconv.Atoi(vars["id"])
+	id, err := strconv.Atoi(path.Base(r.URL.Path)) //to use std pkg
 	if err != nil {
 		goto Error
 	}
