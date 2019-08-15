@@ -1,17 +1,18 @@
 package tests
 
 import (
-	"github.com/yangpeng-chn/go-web-framework/controllers"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/yangpeng-chn/go-web-framework/controllers"
 )
 
 // there is no need to run another http server to run the test cases in this file
 // the response body will be shown in the same console as well as the test result
 
-func TestGetArticlesHandler(t *testing.T) {
+func TestGetArticlesServeHandler(t *testing.T) {
 	request, err := http.NewRequest("GET", "http://localhost:4201/v1/articles", nil)
 	if err != nil {
 		t.Error(err) //Something is wrong while sending request
@@ -35,7 +36,7 @@ func TestGetArticlesHandler(t *testing.T) {
 	}
 }
 
-func TestGetArticleHandler(t *testing.T) {
+func TestGetArticleServeHandler(t *testing.T) {
 	request, err := http.NewRequest("GET", "http://localhost:4201/v1/articles/1", nil)
 	if err != nil {
 		t.Error(err) //Something is wrong while sending request
@@ -55,13 +56,13 @@ func TestGetArticleHandler(t *testing.T) {
 	}
 }
 
-func TestAddArticleHandler(t *testing.T) {
-	dataJson := `{
+func TestAddArticleServeHandler(t *testing.T) {
+	dataJSON := `{
  "id": 4,
  "title": "title4",
  "content": "content4"
  }`
-	reader := strings.NewReader(dataJson) //Convert string to reader, return strings.Reader
+	reader := strings.NewReader(dataJSON) //Convert string to reader, return strings.Reader
 	rr := httptest.NewRecorder()
 	request, err := http.NewRequest("POST", "http://localhost:4201/v1/articles", reader)
 	handler := http.HandlerFunc(controllers.AddArticleHandler)
@@ -75,13 +76,13 @@ func TestAddArticleHandler(t *testing.T) {
 	}
 }
 
-func TestUpdateArticleHandler(t *testing.T) {
-	dataJson := `{
+func TestUpdateArticleServeHandler(t *testing.T) {
+	dataJSON := `{
  "id": 4,
  "title": "updated-title",
  "content": "updated-content"
  }`
-	reader := strings.NewReader(dataJson)
+	reader := strings.NewReader(dataJSON)
 	rr := httptest.NewRecorder()
 	request, err := http.NewRequest("PUT", "http://localhost:4201/v1/articles/1", reader)
 	handler := http.HandlerFunc(controllers.UpdateArticleHandler)
@@ -95,7 +96,7 @@ func TestUpdateArticleHandler(t *testing.T) {
 	}
 }
 
-func TestDeleteArticleHandler(t *testing.T) {
+func TestDeleteArticleServeHandler(t *testing.T) {
 	rr := httptest.NewRecorder()
 	request, err := http.NewRequest("DELETE", "http://localhost:4201/v1/articles/4", nil)
 	handler := http.HandlerFunc(controllers.DeleteArticleHandler)

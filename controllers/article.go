@@ -2,20 +2,26 @@ package controllers
 
 import (
 	"encoding/json"
-	// "github.com/gorilla/mux"
-	"github.com/yangpeng-chn/go-web-framework/models"
-	"github.com/yangpeng-chn/go-web-framework/settings"
 	"net/http"
 	"path"
 	"strconv"
+
+	"github.com/yangpeng-chn/go-web-framework/models"
+	"github.com/yangpeng-chn/go-web-framework/settings"
 )
 
 func AddArticleHandler(w http.ResponseWriter, r *http.Request) {
 	SetResponseHeaders(w, r)
 	var err error
 	var body []byte
-	var responseCode int = http.StatusBadRequest
+	var responseCode = http.StatusBadRequest
 	var article models.Article
+
+	// or use decode
+	// if err = json.NewDecoder(r.Body).Decode(&article); err != nil {
+	// 	goto Error
+	// }
+
 	if body, err = ParseRequest(w, r); err != nil {
 		goto Error
 	}
@@ -37,7 +43,7 @@ Error:
 func GetArticlesHandler(w http.ResponseWriter, r *http.Request) { //get all articles
 	SetResponseHeaders(w, r)
 	var err error
-	var responseCode int = http.StatusBadRequest
+	var responseCode = http.StatusBadRequest
 	// var articles []*models.Article
 	var articles []models.Article
 
@@ -59,7 +65,7 @@ Error:
 func GetArticleHandler(w http.ResponseWriter, r *http.Request) {
 	SetResponseHeaders(w, r)
 	var err error
-	var responseCode int = http.StatusBadRequest
+	var responseCode = http.StatusBadRequest
 	var article *models.Article
 
 	// vars := mux.Vars(r)
@@ -91,7 +97,7 @@ Error:
 func UpdateArticleHandler(w http.ResponseWriter, r *http.Request) {
 	SetResponseHeaders(w, r)
 	var err error
-	var responseCode int = http.StatusBadRequest
+	var responseCode = http.StatusBadRequest
 	var article models.Article
 	var body []byte
 
@@ -125,7 +131,7 @@ Error:
 func DeleteArticleHandler(w http.ResponseWriter, r *http.Request) {
 	SetResponseHeaders(w, r)
 	var err error
-	var responseCode int = http.StatusBadRequest
+	var responseCode = http.StatusBadRequest
 
 	// vars := mux.Vars(r)
 	// id, err := strconv.Atoi(vars["id"])

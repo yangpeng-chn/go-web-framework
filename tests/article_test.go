@@ -53,12 +53,12 @@ func TestGetArticleHandler(t *testing.T) {
 }
 
 func TestAddArticleHandler(t *testing.T) {
-	dataJson := `{
+	dataJSON := `{
  "id": 4,
  "title": "title4",
  "content": "content4"
  }`
-	reader := strings.NewReader(dataJson) //Convert string to reader
+	reader := strings.NewReader(dataJSON) //Convert string to reader
 	request, err := http.NewRequest("POST", "http://localhost:4201/v1/articles", reader)
 
 	res, err := http.DefaultClient.Do(request)
@@ -71,12 +71,12 @@ func TestAddArticleHandler(t *testing.T) {
 }
 
 func TestUpdateArticleHandler(t *testing.T) {
-	dataJson := `{
+	dataJSON := `{
  "id": 4,
  "title": "updated-title",
  "content": "updated-content"
  }`
-	reader := strings.NewReader(dataJson) //Convert string to reader
+	reader := strings.NewReader(dataJSON) //Convert string to reader
 	request, err := http.NewRequest("PUT", "http://localhost:4201/v1/articles/1", reader)
 
 	res, err := http.DefaultClient.Do(request)
