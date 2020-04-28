@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  go:
+    build: .
+    ports:
+      - 4201:4201
+    volumes:
+      - ./:/app
+    working_dir: /app

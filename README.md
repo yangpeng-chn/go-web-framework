@@ -35,17 +35,25 @@ git clone https://github.com/yangpeng-chn/go-web-framework.git
 
 		$ openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
 
+### 4. Start web api
 
-	
-### 4. `go get` or `dep ensure` to install required packages, start web server
-	
-	$ go get <urls>
-	$ go get -u github.com/golang/dep/cmd/dep
-	$ dep ensure
+	$ export GOFLAGS=-mod=vendor
+	$ go mod init github.com/yangpeng-chn/go-web-framework (go.mod generated)
+	$ go mod vendor (go.mod updated, go.sum generated, vendor generated)
+
+Start with go run main.go command
 
 	$ go run main.go
-	
-### 5. Test REST API (HTTP)
+	2020-04-29 00:26:52 Listening on port 4201 ... [OK]
+
+Or, start with development mode (hot-reload supported)
+
+	$ docker-compose up
+
+	 (stop)
+	$ docker-compose down --remove-orphans --volumes
+
+### Test REST API (HTTP)
 
 1. Get articles
 
