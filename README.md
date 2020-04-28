@@ -48,12 +48,33 @@ Start with go run main.go command
 
 Or, start with development mode (hot-reload supported)
 
-	$ docker-compose up
+	$ docker-compose up --build
+	Building go
+	Step 1/4 : FROM golang:1.14
+	 ---> 2421885b04da
+	Step 2/4 : RUN go get github.com/oxequa/realize
+	 ---> Using cache
+	 ---> 2131ca7f8662
+	Step 3/4 : EXPOSE 4201
+	 ---> Using cache
+	 ---> e5fb76b58be8
+	Step 4/4 : CMD [ "realize", "start", "--run" ]
+	 ---> Using cache
+	 ---> c8cb5439bd09
+	Successfully built c8cb5439bd09
+	Successfully tagged go-web-framework_go:latest
+	Starting go-web-framework_go_1 ... done
+	Attaching to go-web-framework_go_1
+	go_1  | [18:29:11][API] : Watching 10 file/s 7 folder/s
+	go_1  | [18:29:11][API] : Build started
+	go_1  | [18:29:12][API] : Build completed in 0.722 s
+	go_1  | [18:29:12][API] : Running..
+	go_1  | [18:29:12][API] : 2020-04-28 18:29:12 Listening on port 4201 ... [OK]
 
 	 (stop)
 	$ docker-compose down --remove-orphans --volumes
 
-### Test REST API (HTTP)
+### 5. Test REST API (HTTP)
 
 1. Get articles
 
