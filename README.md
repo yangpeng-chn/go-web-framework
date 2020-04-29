@@ -41,6 +41,8 @@ git clone https://github.com/yangpeng-chn/go-web-framework.git
 	$ go mod init github.com/yangpeng-chn/go-web-framework (go.mod generated)
 	$ go mod vendor (go.mod updated, go.sum generated, vendor generated)
 
+**4.1 dev mode**
+
 Start with go run main.go command
 
 	$ go run main.go
@@ -73,6 +75,13 @@ Or, start with development mode (hot-reload supported)
 
 	 (stop)
 	$ docker-compose down --remove-orphans --volumes
+
+**4.2 production mode**
+
+	$ vi docker-compose.yml
+	dockerfile: Dockerfile -> dockerfile: Dockerfile.deploy
+
+	$ docker-compose up --build
 
 ### 5. Test REST API (HTTP)
 

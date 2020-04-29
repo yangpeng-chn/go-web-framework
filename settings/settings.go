@@ -8,6 +8,7 @@ import (
 type Configuration struct {
 	LogIndent   bool
 	EnableHTTPS bool
+	UseDatabase bool
 	Cert        string
 	Key         string
 }

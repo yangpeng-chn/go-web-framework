@@ -1,10 +1,67 @@
-version: "3"
+version: "3.5"
 
 services:
-  go:
-    build: .
-    ports:
-      - 4201:4201
+  app:
+    container_name: full_app
+    build:
+      context: .
+      dockerfile: Dockerfile.deploy
+    ports: 
+      - 4201:4201 
+    restart: on-failure
     volumes:
       - ./:/app
-    working_dir: /app
+    depends_on:
+      - fullstack-mysql          
+    networks:
+      - fullstack
+
+  fullstack-mysql:
+    image: mysql:5.7
+    container_name: db_mysql
+    ports: 
+      - 3306:3306
+    environment: 
+      - MYSQL_ROOT_HOST=${DB_HOST} 
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - database_mysql:/var/lib/mysql
+    networks:
+      - fullstack
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    depends_on:
+      - fullstack-mysql
+    environment:
+      - PMA_HOST=fullstack-mysql # Note the "fullstack-mysql". Must be the name of the what you used as the mysql service.
+      - PMA_USER=${DB_USER}
+      - PMA_PORT=${DB_PORT}
+      - PMA_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 9090:80
+    restart: always
+    networks:
+      - fullstack
+
+volumes:
+  # api:
+  database_mysql:                  
+
+# Networks to be created to facilitate communication between containers
+networks:
+  fullstack:
+    driver: bridge
+
+# services:
+#   go:
+#     build: .
+#     ports:
+#       - 8080:8080
+#     volumes:
+#       - ./:/app
+#     working_dir: /app
