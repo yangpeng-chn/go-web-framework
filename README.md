@@ -180,3 +180,8 @@ Error
 	 "URI": "/v1/articles/5",
 	 "RequestData": ""
 	}
+
+## Other
+
+	# docker build -t myapp-deploy -f Dockerfile.deploy .
+	# docker run -it -p 4201:4201 myapp-deploy
