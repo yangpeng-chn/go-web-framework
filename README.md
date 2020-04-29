@@ -83,7 +83,12 @@ Or, start with development mode (hot-reload supported)
 
 	$ docker-compose up --build
 
+	 (stop)
+	$ docker-compose down --remove-orphans --volumes
+
 ### 5. Test REST API (HTTP)
+
+Articles are stored in memory while posts are stored in database
 
 1. Get articles
 
@@ -98,17 +103,44 @@ Or, start with development mode (hot-reload supported)
 3. Add article
 
 		curl -X POST http://localhost:4201/v1/articles -d '{"id":4,"title": "title4","content":"content4"}'
-		{"code":200,"msg":"OK"}
+		{"id":4,"title":"title4","content":"content4"}
 
 4. Update articles
 
 		curl -X PUT http://localhost:4201/v1/articles/4 -d '{"id":4,"title":"updated-title","content":"updated-content"}'
-		{"code":200,"msg":"OK"}
+		{"id":4,"title":"updated-title","content":"updated-content"}
 		
 5. Delete article
 
 		curl -X DELETE http://localhost:4201/v1/articles/4
 		{"code":200,"msg":"OK"}
+
+		curl -X DELETE http://localhost:4201/v1/articles/5              
+		{"error":"article not found"}
+
+6. Get posts
+
+		curl -X GET http://localhost:4201/v1/posts 
+		[{"id":1,"title":"Title 1","content":"Hello world 1","author":{"id":1,"nickname":"Yang","email":"yang@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":1,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},{"id":2,"title":"Title 2","content":"Hello world 2","author":{"id":2,"nickname":"Martin Luther","email":"luther@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":2,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"}]
+
+7. Get post
+
+		curl -X GET http://localhost:4201/v1/posts/1
+		{"id":1,"title":"Title 1","content":"Hello world 1","author":{"id":1,"nickname":"Yang","email":"yang@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":1,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"}
+
+8. Add post
+
+		curl -X POST http://localhost:4201/v1/posts -d '{"id":3,"title":"title 3","content":"content 3"} ...'
+
+9.  Update post
+
+		curl -X PUT http://localhost:4201/v1/posts/1 -d '{"id":1,"title":"updated-title","content":"updated-content"}'
+		{"error":"Unauthorized"}
+
+10.  Delete post
+
+		curl -X DELETE http://localhost:4201/v1/posts/1
+		{"error":"Unauthorized"}
 
 ### 6. Use go test (HTTP)
 

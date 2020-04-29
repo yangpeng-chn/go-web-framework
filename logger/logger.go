@@ -1,4 +1,4 @@
-package settings
+package logger
 
 import (
 	"bytes"
@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"regexp"
 	"time"
+
+	"github.com/yangpeng-chn/go-web-framework/settings"
 )
 
 type Log struct {
@@ -52,7 +54,7 @@ func WriteLog(r *http.Request, code int, erro error, action string) {
 		log.Fatal(err)
 	}
 
-	conf = GetConfig()
+	conf := settings.GetConfig()
 	if conf.LogIndent {
 		var out bytes.Buffer
 		json.Indent(&out, b, "", " ")

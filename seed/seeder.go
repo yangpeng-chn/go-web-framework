@@ -9,8 +9,8 @@ import (
 
 var users = []models.User{
 	models.User{
-		Nickname: "Steven victor",
-		Email:    "steven@gmail.com",
+		Nickname: "Yang",
+		Email:    "yang@gmail.com",
 		Password: "password",
 	},
 	models.User{
@@ -32,7 +32,6 @@ var posts = []models.Post{
 }
 
 func Load(db *gorm.DB) {
-
 	err := db.Debug().DropTableIfExists(&models.Post{}, &models.User{}).Error
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
@@ -49,7 +48,7 @@ func Load(db *gorm.DB) {
 		}
 	*/
 
-	for i, _ := range users {
+	for i := range users {
 		err = db.Debug().Model(&models.User{}).Create(&users[i]).Error
 		if err != nil {
 			log.Fatalf("cannot seed users table: %v", err)

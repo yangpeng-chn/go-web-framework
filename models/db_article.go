@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 )
 
@@ -11,55 +12,58 @@ import (
 var articles []Article
 var article Article
 
-func AddArticle(article Article) error {
+// AddArticle adds an article into the slice
+func (a *Article) AddArticle() error {
 	for _, art := range articles {
-		if article.ID == art.ID {
+		if a.ID == art.ID {
 			return errors.New("article alreay exists")
 		}
 	}
-	articles = append(articles, article)
+	articles = append(articles, *a)
 	return nil
 }
 
-// func GetArticles() ([]*Article, error) {
-func GetArticles() ([]Article, error) {
+// GetArticles returns all the articles
+func (a *Article) GetArticles() (*[]Article, error) {
 	if len(articles) == 0 {
 		for i := 0; i < 3; i++ {
-			// articles = append(articles, &Article{i + 1, "title" + strconv.Itoa(i+1), "content" + strconv.Itoa(i+1)})
 			articles = append(articles, Article{i + 1, "title" + strconv.Itoa(i+1), "content" + strconv.Itoa(i+1)})
 		}
 	}
-	return articles, nil
+	return &articles, nil
 }
 
-func GetArticle(id int) (*Article, error) {
-	var article *Article
-	for i, _ := range articles {
+// GetArticle return an article by ID
+func (a *Article) GetArticle(id int) (*Article, error) {
+	for i := range articles {
+		fmt.Println(id)
 		if articles[i].ID == id {
-			article = &articles[i] //to update the element, use address and index
+			a = &articles[i] //to update the element, use address and index
 		}
 	}
-	if article == nil {
-		return article, errors.New("article not found")
+	if a == nil {
+		return &Article{}, errors.New("article not found")
 	}
-	return article, nil
+	return a, nil
 }
 
-func UpdateArticle(id int, article Article) error {
-	art, err := GetArticle(id)
+// UpdateArticle updates an article by ID
+func (a *Article) UpdateArticle(id int) error {
+	art, err := a.GetArticle(id)
 	if err != nil {
 		return err
 	}
 	// art = &article // error, art declared and not used
 	// art.ID = article.ID // don't change ID
-	art.Title = article.Title
-	art.Content = article.Content
+	art.Title = a.Title
+	art.Content = a.Content
 	return nil
 }
 
-func DeleteArticle(id int) error {
+// DeleteArticle delete an article by ID
+func (a *Article) DeleteArticle(id int) error {
 	var idx int = -1
-	for i, _ := range articles {
+	for i := range articles {
 		if articles[i].ID == id {
 			idx = i
 		}

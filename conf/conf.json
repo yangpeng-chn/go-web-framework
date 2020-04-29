@@ -1,7 +1,7 @@
 {
 	"LogIndent": true,
 	"EnableHTTPS": false,
-	"UseDatabase": false,
+	"UseDatabase": true,
 	"Cert": "certs/server.crt",
 	"Key": "certs/server.key"
 }
