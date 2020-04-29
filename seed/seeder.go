@@ -31,6 +31,7 @@ var posts = []models.Post{
 	},
 }
 
+// Load loads data into database
 func Load(db *gorm.DB) {
 	err := db.Debug().DropTableIfExists(&models.Post{}, &models.User{}).Error
 	if err != nil {
