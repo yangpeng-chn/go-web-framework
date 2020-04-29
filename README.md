@@ -4,8 +4,12 @@ A basic web backend framework with REST API written in Go, this application cont
 
 1. Web server wi/wo HTTPS
 2. Basic REST API with CURD operations
-3. Customized Logging
-3. Two ways of `go test`
+3. Manipulate data in memroy (articles) and mysql database (posts)
+4. Authentication for `posts` resource
+5. Dev mode supporting hot-reload with `realize`, production mode by deploying compiled binary to container
+6. Run webapi, database and phpmyadmin in different containers
+7. Customized logging
+8. Two ways of `go test` (more tests to be added)
 
 ## Usage
 
@@ -17,7 +21,7 @@ git clone https://github.com/yangpeng-chn/go-web-framework.git
 
 ### 2. Change configuration file to enable HTTPS (if requried)
 
-	$ vi settings/conf.json
+	$ vi conf/conf.json
 	"EnableHTTPS": true,
 	
 ### 3. Generate self-signed certificate to enable HTTPS (if changed in step 2)
