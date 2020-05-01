@@ -19,3 +19,6 @@
 
 # Vendor
 /vendor/*
+
+# Binary
+main

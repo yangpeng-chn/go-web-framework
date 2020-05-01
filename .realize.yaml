@@ -8,10 +8,10 @@ schema:
     commands:
       build:
         status: true
-        method: go build -o /go/bin/api
+        method: go build -o main
       run:
         status: true
-        method: /go/bin/api
+        method: ./main
     watcher:
       extensions:
         - go

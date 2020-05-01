@@ -21,67 +21,121 @@ git clone https://github.com/yangpeng-chn/go-web-framework.git
 
 ### 2. Change configuration file to enable HTTPS (if requried)
 
-	$ vi conf/conf.json
-	"EnableHTTPS": true,
+```bash
+$ vi conf/conf.json
+"EnableHTTPS": true,
+```
 	
 ### 3. Generate self-signed certificate to enable HTTPS (if changed in step 2)
 
 1. Prepare `certs` dir
 
-		$ cd go-web-framework
-		$ mkdir certs
+	```bash
+	$ cd go-web-framework
+	$ mkdir certs
+	```
 		
 2. Genereate Private key
 
-		$ openssl genrsa -out server.key 2048
+	```bash
+	$ openssl genrsa -out server.key 2048
+	```
 
 3. Generation of self-signed(x509) public key (PEM-encodings .pem|.crt) based on the private (.key)
 
-		$ openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
+	```bash
+	$ openssl req -new -x509 -sha256 -key server.key -out server.crt -days 3650
+	```
 
 ### 4. Start web api
 
+	```bash
 	$ export GOFLAGS=-mod=vendor
+	$ export GO111MODULE=on 
 	$ go mod init github.com/yangpeng-chn/go-web-framework (go.mod generated)
 	$ go mod vendor (go.mod updated, go.sum generated, vendor generated)
+	```
 
-**4.1 dev mode**
+**4.1 Dev mode**
 
-Start with go run main.go command
+4.1.1 Start service with `go run main.go` (without hot-reload and docker)
 
+	```bash
 	$ go run main.go
 	2020-04-29 00:26:52 Listening on port 4201 ... [OK]
+	```
 
-Or, start with development mode (hot-reload supported)
+4.1.2 Start service with `realize` with hot-reload and without docker, database not available
 
+	```bash
+	$ vi conf/conf.json
+	"UseDatabase": false,
+
+	$ GO111MODULE=off go get github.com/oxequa/realize
+	$ vi ~/.zprofile
+	$ source ~/.zprofile
+	---
+	export PATH=$PATH:$GOPATH/bin
+	---
+	$ which realize
+
+	$ realize start --run # also works without --run
+	[20:45:52][API] : Watching 157 file/s 45 folder/s
+	[20:45:52][API] : Build started
+	[20:45:52][API] : Build completed in 0.546 s
+	[20:45:52][API] : Running..
+	[20:45:53][API] : 2020-05-01 20:45:53 Listening on port 4201 ... [OK]
+	```
+
+4.1.3 Start with docker-compose (hot-reload supported)
+
+	```bash
 	$ docker-compose up --build
-	Building go
-	Step 1/4 : FROM golang:1.14
-	 ---> 2421885b04da
-	Step 2/4 : RUN go get github.com/oxequa/realize
-	 ---> Using cache
-	 ---> 2131ca7f8662
-	Step 3/4 : EXPOSE 4201
-	 ---> Using cache
-	 ---> e5fb76b58be8
-	Step 4/4 : CMD [ "realize", "start", "--run" ]
-	 ---> Using cache
-	 ---> c8cb5439bd09
-	Successfully built c8cb5439bd09
-	Successfully tagged go-web-framework_go:latest
-	Starting go-web-framework_go_1 ... done
-	Attaching to go-web-framework_go_1
-	go_1  | [18:29:11][API] : Watching 10 file/s 7 folder/s
-	go_1  | [18:29:11][API] : Build started
-	go_1  | [18:29:12][API] : Build completed in 0.722 s
-	go_1  | [18:29:12][API] : Running..
-	go_1  | [18:29:12][API] : 2020-04-28 18:29:12 Listening on port 4201 ... [OK]
+	Building app
+	Step 1/7 : FROM golang:1.14
+	---> 2421885b04da
+	Step 2/7 : RUN go get github.com/oxequa/realize
+	---> Using cache
+	---> 2131ca7f8662
+	Step 3/7 : ENV APP_HOME /app
+	---> Using cache
+	---> a6a9a670c9cb
+	Step 4/7 : RUN mkdir -p $APP_HOME
+	---> Using cache
+	---> c2467a23fca1
+	Step 5/7 : WORKDIR $APP_HOME
+	---> Using cache
+	---> 0356ac1555ac
+	Step 6/7 : EXPOSE 4201
+	---> Using cache
+	---> 7879635444d2
+	Step 7/7 : CMD [ "realize", "start", "--run" ]
+	---> Using cache
+	---> cc1b8be1f056
+
+	Successfully built cc1b8be1f056
+	Successfully tagged go-web-framework_app:latest
+	Starting db_mysql ... done
+	Starting phpmyadmin ... done
+	Starting full_app   ... done
+	Attaching to db_mysql, phpmyadmin, full_app
+	...
+	full_app           | [11:46:28][API] : Watching 157 file/s 45 folder/s
+	full_app           | [11:46:28][API] : Build started
+	db_mysql           | 2020-05-01T11:46:28.154363Z 0 [Note] Event Scheduler: Loaded 0 events
+	db_mysql           | 2020-05-01T11:46:28.156387Z 0 [Note] mysqld: ready for connections.
+	db_mysql           | Version: '5.7.29'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+	full_app           | [11:46:40][API] : Build completed in 12.178 s
+	full_app           | [11:46:40][API] : Running..
+	full_app           | [11:46:40][API] : 2020-05-01 11:46:40 Listening on port 4201 ... [OK]
 
 	 (stop)
 	$ docker-compose down --remove-orphans --volumes
+	```
 
-**4.2 production mode**
+**4.2 Production mode**
 
+	```bash
 	$ vi docker-compose.yml
 	dockerfile: Dockerfile -> dockerfile: Dockerfile.deploy
 
@@ -89,99 +143,125 @@ Or, start with development mode (hot-reload supported)
 
 	 (stop)
 	$ docker-compose down --remove-orphans --volumes
+	```
 
 ### 5. Test REST API (HTTP)
 
 Articles are stored in memory while posts are stored in database
 
 1. Get articles
-
-		curl -X GET http://localhost:4201/v1/articles
-		[{"id":1,"title":"title1","content":"content1"},{"id":2,"title":"title2","content":"content2"},{"id":3,"title":"title3","content":"content3"}]
+   
+	```bash
+	curl -X GET http://localhost:4201/v1/articles
+	[{"id":1,"title":"title1","content":"content1"},{"id":2,"title":"title2","content":"content2"},{"id":3,"title":"title3","content":"content3"}]
+	```
 	
 2. Get article
 
-		curl -X GET http://localhost:4201/v1/articles/1
-		{"id":1,"title":"title1","content":"content1"}
+	```bash
+	curl -X GET http://localhost:4201/v1/articles/1
+	{"id":1,"title":"title1","content":"content1"}
+	```
 		
 3. Add article
 
-		curl -X POST http://localhost:4201/v1/articles -d '{"id":4,"title": "title4","content":"content4"}'
-		{"id":4,"title":"title4","content":"content4"}
+	```bash
+	curl -X POST http://localhost:4201/v1/articles -d '{"id":4,"title": "title4","content":"content4"}'{"id":4,"title":"title4","content":"content4"}
+	```
 
 4. Update articles
 
-		curl -X PUT http://localhost:4201/v1/articles/4 -d '{"id":4,"title":"updated-title","content":"updated-content"}'
-		{"id":4,"title":"updated-title","content":"updated-content"}
+	```bash
+	curl -X PUT http://localhost:4201/v1/articles/4 -d '{"id":4,"title":"updated-title","content":"updated-content"}'{"id":4,"title":"updated-title","content":"updated-content"}
+	```
 		
 5. Delete article
 
-		curl -X DELETE http://localhost:4201/v1/articles/4
-		{"code":200,"msg":"OK"}
+	```bash
+	curl -X DELETE http://localhost:4201/v1/articles/4
+	{"code":200,"msg":"OK"}
 
-		curl -X DELETE http://localhost:4201/v1/articles/5              
-		{"error":"article not found"}
+	curl -X DELETE http://localhost:4201/v1/articles/5              
+	{"error":"article not found"}
+	```
 
 6. Get posts
 
-		curl -X GET http://localhost:4201/v1/posts 
+	```bash
+	curl -X GET http://localhost:4201/v1/posts 
 		[{"id":1,"title":"Title 1","content":"Hello world 1","author":{"id":1,"nickname":"Yang","email":"yang@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":1,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},{"id":2,"title":"Title 2","content":"Hello world 2","author":{"id":2,"nickname":"Martin Luther","email":"luther@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":2,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"}]
+	```
 
 7. Get post
 
-		curl -X GET http://localhost:4201/v1/posts/1
-		{"id":1,"title":"Title 1","content":"Hello world 1","author":{"id":1,"nickname":"Yang","email":"yang@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":1,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"}
+	```bash
+	curl -X GET http://localhost:4201/v1/posts/1
+	{"id":1,"title":"Title 1","content":"Hello world 1","author":{"id":1,"nickname":"Yang","email":"yang@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":1,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"}
+	```
 
 8. Add post
 
-		curl -X POST http://localhost:4201/v1/posts -d '{"id":3,"title":"title 3","content":"content 3"} ...'
+	```bash
+	curl -X POST http://localhost:4201/v1/posts -d '{"id":3,"title":"title 3","content":"content 3"} ...'
+	```
 
 9.  Update post
 
-		curl -X PUT http://localhost:4201/v1/posts/1 -d '{"id":1,"title":"updated-title","content":"updated-content"}'
-		{"error":"Unauthorized"}
+	```bash
+	curl -X PUT http://localhost:4201/v1/posts/1 -d '{"id":1,"title":"updated-title","content":"updated-content"}'{"error":"Unauthorized"}
+	```
 
-10.  Delete post
+9.  Delete post
 
-		curl -X DELETE http://localhost:4201/v1/posts/1
-		{"error":"Unauthorized"}
+	```bash
+	curl -X DELETE http://localhost:4201/v1/posts/1
+	{"error":"Unauthorized"}
+	```
 
 ### 6. Use go test (HTTP)
 
-	$ go test tests/article_selfserve_test.go
-	ok      command-line-arguments  0.020s
+```bash
+$ go test tests/article_selfserve_test.go
+ok      command-line-arguments  0.020s
 	
-	$ go run main.go
-	$ go test tests/article_test.go
-	ok      command-line-arguments  0.020s
+$ go run main.go
+$ go test tests/article_test.go
+ok      command-line-arguments  0.020s
+```
 	
 ## Log Format
 
 OK
 
-	{
-	 "Time": "2019-08-03 17:03:37",
-	 "Message": "OK",
-	 "ResponseCode": 200,
-	 "Action": "GetArticlesHandler",
-	 "Method": "GET",
-	 "URI": "/v1/articles",
-	 "RequestData": ""
-	}
-		
+```bash
+{
+ "Time": "2019-08-03 17:03:37",
+ "Message": "OK",
+ "ResponseCode": 200,
+ "Action": "GetArticlesHandler",
+ "Method": "GET",
+ "URI": "/v1/articles",
+ "RequestData": ""
+}
+```
+
 Error
 
-	{
-	 "Time": "2019-08-14 00:08:47",
-	 "Message": "article not found",
-	 "ResponseCode": 400,
-	 "Action": "DeleteArticleHandler",
-	 "Method": "DELETE",
-	 "URI": "/v1/articles/5",
-	 "RequestData": ""
-	}
+```bash
+{
+ "Time": "2019-08-14 00:08:47",
+ "Message": "article not found",
+ "ResponseCode": 400,
+ "Action": "DeleteArticleHandler",
+ "Method": "DELETE",
+ "URI": "/v1/articles/5",
+ "RequestData": ""
+}
+```
 
 ## Other
 
-	# docker build -t myapp-deploy -f Dockerfile.deploy .
-	# docker run -it -p 4201:4201 myapp-deploy
+```bash
+# docker build -t myapp-deploy -fDockerfile.deploy .
+# docker run -it -p 4201:4201 myapp-deploy
+```
