@@ -189,7 +189,7 @@ Articles are stored in memory while posts are stored in database
 
 	```bash
 	curl -X GET http://localhost:4201/v1/posts 
-		[{"id":1,"title":"Title 1","content":"Hello world 1","author":{"id":1,"nickname":"Yang","email":"yang@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":1,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},{"id":2,"title":"Title 2","content":"Hello world 2","author":{"id":2,"nickname":"Martin Luther","email":"luther@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":2,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"}]
+	[{"id":1,"title":"Title 1","content":"Hello world 1","author":{"id":1,"nickname":"Yang","email":"yang@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":1,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},{"id":2,"title":"Title 2","content":"Hello world 2","author":{"id":2,"nickname":"Martin Luther","email":"luther@gmail.com","password":"password","created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"},"author_id":2,"created_at":"2020-04-29T14:54:36Z","updated_at":"2020-04-29T14:54:36Z"}]
 	```
 
 7. Get post
