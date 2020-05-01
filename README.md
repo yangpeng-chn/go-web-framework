@@ -56,16 +56,16 @@ $ vi conf/conf.json
 	$ go mod vendor (go.mod updated, go.sum generated, vendor generated)
 	```
 
-**4.1 Dev mode**
+**Dev mode**
 
-4.1.1 Start service with `go run main.go` (without hot-reload and docker)
+1. Start service with `go run main.go` (without hot-reload and docker)
 
 	```bash
 	$ go run main.go
 	2020-04-29 00:26:52 Listening on port 4201 ... [OK]
 	```
 
-4.1.2 Start service with `realize` with hot-reload and without docker, database not available
+2. Start service with `realize` with hot-reload and without docker, database not available
 
 	```bash
 	$ vi conf/conf.json
@@ -87,7 +87,7 @@ $ vi conf/conf.json
 	[20:45:53][API] : 2020-05-01 20:45:53 Listening on port 4201 ... [OK]
 	```
 
-4.1.3 Start with docker-compose (hot-reload supported)
+3. Start with docker-compose (hot-reload supported)
 
 	```bash
 	$ docker-compose up --build
@@ -133,17 +133,17 @@ $ vi conf/conf.json
 	$ docker-compose down --remove-orphans --volumes
 	```
 
-**4.2 Production mode**
+**Production mode**
 
-	```bash
-	$ vi docker-compose.yml
-	dockerfile: Dockerfile -> dockerfile: Dockerfile.deploy
+```bash
+$ vi docker-compose.yml
+dockerfile: Dockerfile -> dockerfile: Dockerfile.deploy
 
-	$ docker-compose up --build
+$ docker-compose up --build
 
-	 (stop)
-	$ docker-compose down --remove-orphans --volumes
-	```
+ (stop)
+$ docker-compose down --remove-orphans --volumes
+```
 
 ### 5. Test REST API (HTTP)
 
