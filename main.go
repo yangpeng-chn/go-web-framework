@@ -7,15 +7,15 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/yangpeng-chn/go-web-framework/controllers"
-	"github.com/yangpeng-chn/go-web-framework/seed"
-	"github.com/yangpeng-chn/go-web-framework/settings"
+	"github.com/yangpeng-chn/go-web-framework/models"
+	"github.com/yangpeng-chn/go-web-framework/utils/settings"
 )
 
 var server = controllers.Server{}
 
 func main() {
 	var err error
-	file := "conf/conf.json"
+	file := "conf.json"
 	if err = settings.ReadConfigFile(file); err != nil {
 		log.Fatal(err.Error())
 		return
@@ -31,7 +31,7 @@ func main() {
 		}
 
 		server.InitializeDB(os.Getenv("DB_DRIVER"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_PORT"), os.Getenv("DB_HOST"), os.Getenv("DB_NAME"))
-		seed.Load(server.DB)
+		models.Load(server.DB)
 	}
 	server.Run(":4201")
 }

@@ -10,7 +10,7 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/yangpeng-chn/go-web-framework/settings"
+	"github.com/yangpeng-chn/go-web-framework/utils/settings"
 )
 
 type Log struct {

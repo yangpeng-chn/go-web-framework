@@ -17,9 +17,9 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"    //mysql database driver
 	_ "github.com/jinzhu/gorm/dialects/postgres" //postgres database driver
 	_ "github.com/jinzhu/gorm/dialects/sqlite"   // sqlite database driver
-	"github.com/yangpeng-chn/go-web-framework/logger"
 	"github.com/yangpeng-chn/go-web-framework/models"
-	"github.com/yangpeng-chn/go-web-framework/settings"
+	"github.com/yangpeng-chn/go-web-framework/utils/logger"
+	"github.com/yangpeng-chn/go-web-framework/utils/settings"
 )
 
 // Server defines server object containing DB and router instances

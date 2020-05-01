@@ -6,10 +6,10 @@ import (
 	"path"
 	"strconv"
 
-	"github.com/yangpeng-chn/go-web-framework/logger"
+	"github.com/yangpeng-chn/go-web-framework/middlewares"
 	"github.com/yangpeng-chn/go-web-framework/models"
-	"github.com/yangpeng-chn/go-web-framework/responses"
 	"github.com/yangpeng-chn/go-web-framework/utils/formaterror"
+	"github.com/yangpeng-chn/go-web-framework/utils/logger"
 )
 
 // AddArticle adds an article into the slice
@@ -30,18 +30,18 @@ func (server *Server) AddArticle(w http.ResponseWriter, r *http.Request) {
 	}
 	if err = article.AddArticle(); err != nil {
 		formattedError = formaterror.FormatError(err.Error())
-		responses.ERROR(w, http.StatusInternalServerError, formattedError)
+		middlewares.ERROR(w, http.StatusInternalServerError, formattedError)
 		logger.WriteLog(r, http.StatusInternalServerError, formattedError, server.GetCurrentFuncName())
 		return
 	}
 	responseCode = http.StatusOK
 	// WriteResponse(w, responseCode, nil)
-	responses.JSON(w, http.StatusOK, article)
+	middlewares.JSON(w, http.StatusOK, article)
 	logger.WriteLog(r, responseCode, nil, server.GetCurrentFuncName())
 	return
 Error:
 	// WriteErrorResponse(w, responseCode, err)
-	responses.ERROR(w, responseCode, err)
+	middlewares.ERROR(w, responseCode, err)
 	logger.WriteLog(r, responseCode, err, server.GetCurrentFuncName())
 }
 
@@ -52,11 +52,11 @@ func (server *Server) GetArticles(w http.ResponseWriter, r *http.Request) { //ge
 	articles, err := article.GetArticles()
 	if err != nil {
 		formattedError = formaterror.FormatError(err.Error())
-		responses.ERROR(w, http.StatusInternalServerError, formattedError)
+		middlewares.ERROR(w, http.StatusInternalServerError, formattedError)
 		logger.WriteLog(r, http.StatusInternalServerError, formattedError, server.GetCurrentFuncName())
 		return
 	}
-	responses.JSON(w, http.StatusOK, articles)
+	middlewares.JSON(w, http.StatusOK, articles)
 	logger.WriteLog(r, http.StatusOK, nil, server.GetCurrentFuncName())
 	return
 }
@@ -82,11 +82,11 @@ func (server *Server) GetArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseCode = http.StatusOK
-	responses.JSON(w, http.StatusOK, article)
+	middlewares.JSON(w, http.StatusOK, article)
 	logger.WriteLog(r, responseCode, nil, server.GetCurrentFuncName())
 	return
 Error:
-	responses.ERROR(w, responseCode, err)
+	middlewares.ERROR(w, responseCode, err)
 	logger.WriteLog(r, responseCode, err, server.GetCurrentFuncName())
 }
 
@@ -114,11 +114,11 @@ func (server *Server) UpdateArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseCode = http.StatusOK
-	responses.JSON(w, http.StatusOK, article)
+	middlewares.JSON(w, http.StatusOK, article)
 	logger.WriteLog(r, responseCode, nil, server.GetCurrentFuncName())
 	return
 Error:
-	responses.ERROR(w, responseCode, err)
+	middlewares.ERROR(w, responseCode, err)
 	logger.WriteLog(r, responseCode, err, server.GetCurrentFuncName())
 }
 
@@ -138,10 +138,10 @@ func (server *Server) DeleteArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responseCode = http.StatusOK
-	responses.JSON(w, responseCode, responses.Result{Code: 200, Msg: "OK"})
+	middlewares.JSON(w, responseCode, middlewares.Result{Code: 200, Msg: "OK"})
 	logger.WriteLog(r, responseCode, nil, server.GetCurrentFuncName())
 	return
 Error:
-	responses.ERROR(w, responseCode, err)
+	middlewares.ERROR(w, responseCode, err)
 	logger.WriteLog(r, responseCode, err, server.GetCurrentFuncName())
 }

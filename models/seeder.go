@@ -1,31 +1,30 @@
-package seed
+package models
 
 import (
 	"log"
 
 	"github.com/jinzhu/gorm"
-	"github.com/yangpeng-chn/go-web-framework/models"
 )
 
-var users = []models.User{
-	models.User{
+var users = []User{
+	User{
 		Nickname: "Yang",
 		Email:    "yang@gmail.com",
 		Password: "password",
 	},
-	models.User{
+	User{
 		Nickname: "Martin Luther",
 		Email:    "luther@gmail.com",
 		Password: "password",
 	},
 }
 
-var posts = []models.Post{
-	models.Post{
+var posts = []Post{
+	Post{
 		Title:   "Title 1",
 		Content: "Hello world 1",
 	},
-	models.Post{
+	Post{
 		Title:   "Title 2",
 		Content: "Hello world 2",
 	},
@@ -33,30 +32,30 @@ var posts = []models.Post{
 
 // Load loads data into database
 func Load(db *gorm.DB) {
-	err := db.Debug().DropTableIfExists(&models.Post{}, &models.User{}).Error
+	err := db.Debug().DropTableIfExists(&Post{}, &User{}).Error
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
-	err = db.Debug().AutoMigrate(&models.User{}, &models.Post{}).Error
+	err = db.Debug().AutoMigrate(&User{}, &Post{}).Error
 	if err != nil {
 		log.Fatalf("cannot migrate table: %v", err)
 	}
 
 	/*
-		err = db.Debug().Model(&models.Post{}).AddForeignKey("author_id", "users(id)", "cascade", "cascade").Error
+		err = db.Debug().Model(&Post{}).AddForeignKey("author_id", "users(id)", "cascade", "cascade").Error
 		if err != nil {
 			log.Fatalf("attaching foreign key error: %v", err)
 		}
 	*/
 
 	for i := range users {
-		err = db.Debug().Model(&models.User{}).Create(&users[i]).Error
+		err = db.Debug().Model(&User{}).Create(&users[i]).Error
 		if err != nil {
 			log.Fatalf("cannot seed users table: %v", err)
 		}
 		posts[i].AuthorID = users[i].ID
 
-		err = db.Debug().Model(&models.Post{}).Create(&posts[i]).Error
+		err = db.Debug().Model(&Post{}).Create(&posts[i]).Error
 		if err != nil {
 			log.Fatalf("cannot seed posts table: %v", err)
 		}

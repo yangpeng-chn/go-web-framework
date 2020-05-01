@@ -33,6 +33,7 @@ $ vi conf/conf.json
 	```bash
 	$ cd go-web-framework
 	$ mkdir certs
+	$ cd certs
 	```
 		
 2. Genereate Private key
@@ -137,7 +138,7 @@ $ go mod vendor (go.mod updated, go.sum generated, vendor generated)
 
 ```bash
 $ vi docker-compose.yml
-dockerfile: Dockerfile -> dockerfile: Dockerfile.deploy
+dockerfile: Dockerfile.dev -> dockerfile: Dockerfile
 
 $ docker-compose up --build
 
