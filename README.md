@@ -49,12 +49,12 @@ $ vi conf/conf.json
 
 ### 4. Start web api
 
-	```bash
-	$ export GOFLAGS=-mod=vendor
-	$ export GO111MODULE=on 
-	$ go mod init github.com/yangpeng-chn/go-web-framework (go.mod generated)
-	$ go mod vendor (go.mod updated, go.sum generated, vendor generated)
-	```
+```bash
+$ export GOFLAGS=-mod=vendor
+$ export GO111MODULE=on 
+$ go mod init github.com/yangpeng-chn/go-web-framework (go.mod generated)
+$ go mod vendor (go.mod updated, go.sum generated, vendor generated)
+```
 
 **Dev mode**
 
