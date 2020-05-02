@@ -260,9 +260,27 @@ Error
 }
 ```
 
-## Other
+## Note
+
+1. [go mod](https://medium.com/@petomalina/using-go-mod-download-to-speed-up-golang-docker-builds-707591336888)
+
+2. Contents in container when using `Dockerfile.dev` and `docker-compose.yml`
 
 ```bash
-# docker build -t myapp-deploy -fDockerfile.deploy .
+⮀ docker ps -a
+CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                               NAMES
+32e5d0bb8d85        go-web-framework_app    "realize start --run"    50 seconds ago      Up 49 seconds       0.0.0.0:4201->4201/tcp              full_app
+4360effe1a7d        phpmyadmin/phpmyadmin   "/docker-entrypoint.…"   4 minutes ago       Up 49 seconds       0.0.0.0:9090->80/tcp                phpmyadmin
+555d1f9a5228        mysql:5.7               "docker-entrypoint.s…"   4 minutes ago       Up 50 seconds       0.0.0.0:3306->3306/tcp, 33060/tcp   db_mysql
+⮀ docker exec -it 32e5d0bb8d85 sh
+# pwd; ls
+/build
+Dockerfile  Dockerfile.dev  README.md  certs  conf.json  controllers  docker-compose.yml  go.mod  go.sum  main  main.go  middlewares  models  tests  utils
+```
+
+3. Other command
+
+```bash
+# docker build -t myapp-deploy -fDockerfile .
 # docker run -it -p 4201:4201 myapp-deploy
 ```

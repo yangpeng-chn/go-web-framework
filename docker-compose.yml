@@ -10,7 +10,7 @@ services:
       - 4201:4201 
     restart: on-failure
     volumes:
-      - ./:/app
+      - ./:/build
     depends_on:
       - fullstack-mysql          
     networks:
