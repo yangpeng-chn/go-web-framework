@@ -24,13 +24,13 @@ func (a *Article) AddArticle() error {
 }
 
 // GetArticles returns all the articles
-func (a *Article) GetArticles() (*[]Article, error) {
+func (a *Article) GetArticles() ([]Article, error) {
 	if len(articles) == 0 {
 		for i := 0; i < 3; i++ {
 			articles = append(articles, Article{i + 1, "title" + strconv.Itoa(i+1), "content" + strconv.Itoa(i+1)})
 		}
 	}
-	return &articles, nil
+	return articles, nil
 }
 
 // GetArticle return an article by ID

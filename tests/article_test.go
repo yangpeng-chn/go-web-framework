@@ -1,10 +1,12 @@
 package tests
 
 import (
-	"bytes"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"testing"
+
+	"gopkg.in/go-playground/assert.v1"
 )
 
 // to run the test cases in this file, make sure the http server is running
@@ -19,17 +21,13 @@ func TestGetArticlesHandler(t *testing.T) {
 
 	// check code
 	if res.StatusCode != http.StatusOK {
-		t.Errorf("Success expected: %d, returned: %d", http.StatusOK, res.StatusCode) //this means our test failed
+		t.Errorf("want: %d, got: %d", http.StatusOK, res.StatusCode) //this means our test failed
 	}
 
 	// check body
 	expected := `[{"id":1,"title":"title1","content":"content1"},{"id":2,"title":"title2","content":"content2"},{"id":3,"title":"title3","content":"content3"}]`
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(res.Body) //convert io.ReaderCloser to string
-	str := buf.String()
-	if str != expected {
-		t.Errorf("Success expected: %v returned: %v", expected, str) //this means our test failed
-	}
+	respBody, _ := ioutil.ReadAll(res.Body)
+	assert.Equal(t, expected, strings.TrimSuffix(string(respBody), "\n"))
 }
 
 func TestGetArticleHandler(t *testing.T) {
@@ -40,16 +38,12 @@ func TestGetArticleHandler(t *testing.T) {
 	}
 
 	if res.StatusCode != http.StatusOK {
-		t.Errorf("Success expected: %d, returned: %d", http.StatusOK, res.StatusCode)
+		t.Errorf("want: %d, got: %d", http.StatusOK, res.StatusCode)
 	}
 
 	expected := `{"id":1,"title":"title1","content":"content1"}`
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(res.Body)
-	str := buf.String()
-	if str != expected {
-		t.Errorf("Success expected: %v returned: %v", expected, str) //this means our test failed
-	}
+	respBody, _ := ioutil.ReadAll(res.Body)
+	assert.Equal(t, expected, strings.TrimSuffix(string(respBody), "\n"))
 }
 
 func TestAddArticleHandler(t *testing.T) {
@@ -66,7 +60,7 @@ func TestAddArticleHandler(t *testing.T) {
 		t.Error(err)
 	}
 	if res.StatusCode != http.StatusOK {
-		t.Errorf("Success expected: %d, returned: %d", http.StatusOK, res.StatusCode)
+		t.Errorf("want: %d, got: %d", http.StatusOK, res.StatusCode)
 	}
 }
 
@@ -84,7 +78,7 @@ func TestUpdateArticleHandler(t *testing.T) {
 		t.Error(err)
 	}
 	if res.StatusCode != http.StatusOK {
-		t.Errorf("Success expected: %d, returned: %d", http.StatusOK, res.StatusCode)
+		t.Errorf("want: %d, got: %d", http.StatusOK, res.StatusCode)
 	}
 }
 
@@ -95,6 +89,6 @@ func TestDeleteArticleHandler(t *testing.T) {
 		t.Error(err)
 	}
 	if res.StatusCode != http.StatusOK {
-		t.Errorf("Success expected: %d, returned: %d", http.StatusOK, res.StatusCode)
+		t.Errorf("want: %d, got: %d", http.StatusOK, res.StatusCode)
 	}
 }

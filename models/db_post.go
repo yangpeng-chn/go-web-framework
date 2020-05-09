@@ -9,6 +9,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+// Prepare does pre-processing for data
 func (p *Post) Prepare() {
 	p.ID = 0
 	p.Title = html.EscapeString(strings.TrimSpace(p.Title))
@@ -18,6 +19,7 @@ func (p *Post) Prepare() {
 	p.UpdatedAt = time.Now()
 }
 
+// Validate validates the input
 func (p *Post) Validate() error {
 
 	if p.Title == "" {
@@ -32,6 +34,7 @@ func (p *Post) Validate() error {
 	return nil
 }
 
+// SavePost saves post to database
 func (p *Post) SavePost(db *gorm.DB) (*Post, error) {
 	var err error
 	err = db.Debug().Model(&Post{}).Create(&p).Error
@@ -47,6 +50,7 @@ func (p *Post) SavePost(db *gorm.DB) (*Post, error) {
 	return p, nil
 }
 
+// FindAllPosts returns all posts
 func (p *Post) FindAllPosts(db *gorm.DB) (*[]Post, error) {
 	var err error
 	posts := []Post{}
@@ -55,7 +59,7 @@ func (p *Post) FindAllPosts(db *gorm.DB) (*[]Post, error) {
 		return &[]Post{}, err
 	}
 	if len(posts) > 0 {
-		for i, _ := range posts {
+		for i := range posts {
 			err := db.Debug().Model(&User{}).Where("id = ?", posts[i].AuthorID).Take(&posts[i].Author).Error
 			if err != nil {
 				return &[]Post{}, err
@@ -65,6 +69,7 @@ func (p *Post) FindAllPosts(db *gorm.DB) (*[]Post, error) {
 	return &posts, nil
 }
 
+// FindPostByID returns post by ID
 func (p *Post) FindPostByID(db *gorm.DB, pid uint64) (*Post, error) {
 	var err error
 	err = db.Debug().Model(&Post{}).Where("id = ?", pid).Take(&p).Error
@@ -80,6 +85,7 @@ func (p *Post) FindPostByID(db *gorm.DB, pid uint64) (*Post, error) {
 	return p, nil
 }
 
+// UpdateAPost updates post by ID
 func (p *Post) UpdateAPost(db *gorm.DB) (*Post, error) {
 
 	var err error
@@ -113,6 +119,7 @@ func (p *Post) UpdateAPost(db *gorm.DB) (*Post, error) {
 	return p, nil
 }
 
+// DeleteAPost deletes post by ID
 func (p *Post) DeleteAPost(db *gorm.DB, pid uint64, uid uint32) (int64, error) {
 
 	db = db.Debug().Model(&Post{}).Where("id = ? and author_id = ?", pid, uid).Take(&Post{}).Delete(&Post{})
