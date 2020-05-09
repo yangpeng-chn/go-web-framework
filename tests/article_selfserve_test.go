@@ -18,10 +18,7 @@ var s = controllers.Server{}
 
 func TestGetArticlesServeHandler(t *testing.T) {
 	request, err := http.NewRequest("GET", "http://localhost:4201/v1/articles", nil)
-	if err != nil {
-		t.Error(err) //Something is wrong while sending request
-	}
-
+	assert.Equal(t, err, nil)
 	// We create a ResponseRecorder (which satisfies http.ResponseWriter) to record the response.
 	rr := httptest.NewRecorder() // return httptest.ResponseRecorder
 	handler := http.HandlerFunc(middlewares.SetMiddlewareJSON(s.GetArticles))
@@ -36,10 +33,7 @@ func TestGetArticlesServeHandler(t *testing.T) {
 
 func TestGetArticleServeHandler(t *testing.T) {
 	request, err := http.NewRequest("GET", "http://localhost:4201/v1/articles/1", nil)
-	if err != nil {
-		t.Error(err) //Something is wrong while sending request
-	}
-
+	assert.Equal(t, err, nil)
 	rr := httptest.NewRecorder()
 	handler := http.HandlerFunc(middlewares.SetMiddlewareJSON(s.GetArticle))
 	handler.ServeHTTP(rr, request)
@@ -61,9 +55,7 @@ func TestAddArticleServeHandler(t *testing.T) {
 	handler := http.HandlerFunc(middlewares.SetMiddlewareJSON(s.AddArticle))
 	handler.ServeHTTP(rr, request)
 
-	if err != nil {
-		t.Error(err)
-	}
+	assert.Equal(t, err, nil)
 	assert.Equal(t, http.StatusOK, rr.Code)
 }
 
@@ -79,9 +71,7 @@ func TestUpdateArticleServeHandler(t *testing.T) {
 	handler := http.HandlerFunc(middlewares.SetMiddlewareJSON(s.UpdateArticle))
 	handler.ServeHTTP(rr, request)
 
-	if err != nil {
-		t.Error(err)
-	}
+	assert.Equal(t, err, nil)
 	assert.Equal(t, http.StatusOK, rr.Code)
 }
 
@@ -90,8 +80,6 @@ func TestDeleteArticleServeHandler(t *testing.T) {
 	request, err := http.NewRequest("DELETE", "http://localhost:4201/v1/articles/4", nil)
 	handler := http.HandlerFunc(middlewares.SetMiddlewareJSON(s.DeleteArticle))
 	handler.ServeHTTP(rr, request)
-	if err != nil {
-		t.Error(err)
-	}
+	assert.Equal(t, err, nil)
 	assert.Equal(t, http.StatusOK, rr.Code)
 }
