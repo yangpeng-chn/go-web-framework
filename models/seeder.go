@@ -36,7 +36,7 @@ func Load(db *gorm.DB) {
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
-	err = db.Debug().AutoMigrate(&User{}, &Post{}).Error
+	err = db.Debug().Set("gorm:table_options", "ENGINE=InnoDB CHARSET=utf8mb4").AutoMigrate(&User{}, &Post{}).Error
 	if err != nil {
 		log.Fatalf("cannot migrate table: %v", err)
 	}

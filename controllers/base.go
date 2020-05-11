@@ -32,7 +32,7 @@ type Server struct {
 func (server *Server) InitializeDB(Dbdriver, DbUser, DbPassword, DbPort, DbHost, DbName string) {
 	var err error
 	if Dbdriver == "mysql" {
-		DBURL := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", DbUser, DbPassword, DbHost, DbPort, DbName)
+		DBURL := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4,utf8&parseTime=True&loc=Local", DbUser, DbPassword, DbHost, DbPort, DbName)
 		server.DB, err = gorm.Open(Dbdriver, DBURL)
 		if err != nil {
 			fmt.Printf("Cannot connect to %s database", Dbdriver)
@@ -62,7 +62,7 @@ func (server *Server) InitializeDB(Dbdriver, DbUser, DbPassword, DbPort, DbHost,
 		}
 		server.DB.Exec("PRAGMA foreign_keys = ON")
 	}
-	server.DB.Debug().AutoMigrate(&models.User{}, &models.Post{}) //database migration
+	server.DB.Debug().Set("gorm:table_options", "ENGINE=InnoDB CHARSET=utf8mb4").AutoMigrate(&models.User{}, &models.Post{}) //database migration
 }
 
 // Run starts running the server at given port
@@ -106,11 +106,7 @@ func (server *Server) GetCurrentFuncName() string {
 	return f.Name()[dotPos+1:]
 }
 
-// PreflightHandler set PreflightHandler for CORS
-func (server *Server) PreflightHandler(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Content-Type", "application/json;charset=UTF-8")
-	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Set("Access-Control-Allow-Headers", "Accept, Accept-Language, Content-Language, Content-Type")
+// Preflight set Preflight for CORS
+func (server *Server) Preflight(w http.ResponseWriter, r *http.Request) {
 	logger.WriteLog(r, http.StatusOK, nil, server.GetCurrentFuncName())
 }

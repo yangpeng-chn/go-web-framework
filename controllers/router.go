@@ -5,6 +5,9 @@ import (
 )
 
 func (s *Server) initializeRoutes() {
+	// Preflight handler for all preflight requests
+	s.Router.Methods("OPTIONS").HandlerFunc(middlewares.SetMiddlewareJSON(s.Preflight))
+
 	// Login Route
 	// s.Router.HandleFunc("/v1/login", middlewares.SetMiddlewareJSON(s.Login)).Methods("POST")
 

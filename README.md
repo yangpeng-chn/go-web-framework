@@ -113,7 +113,6 @@ $ go mod vendor (go.mod updated, go.sum generated, vendor generated)
 	Step 7/7 : CMD [ "realize", "start", "--run" ]
 	---> Using cache
 	---> cc1b8be1f056
-
 	Successfully built cc1b8be1f056
 	Successfully tagged go-web-framework_app:latest
 	Starting db_mysql ... done
@@ -129,7 +128,6 @@ $ go mod vendor (go.mod updated, go.sum generated, vendor generated)
 	full_app           | [11:46:40][API] : Build completed in 12.178 s
 	full_app           | [11:46:40][API] : Running..
 	full_app           | [11:46:40][API] : 2020-05-01 11:46:40 Listening on port 4201 ... [OK]
-
 	 (stop)
 	$ docker-compose down --remove-orphans --volumes
 	```
