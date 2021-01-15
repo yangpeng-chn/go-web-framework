@@ -22,7 +22,7 @@ git clone https://github.com/yangpeng-chn/go-web-framework.git
 ### 2. Change configuration file to enable HTTPS (if requried)
 
 ```bash
-$ vi conf/conf.json
+$ vi conf.json
 "EnableHTTPS": true,
 ```
 	
@@ -54,7 +54,7 @@ $ vi conf/conf.json
 $ export GOFLAGS=-mod=vendor
 $ export GO111MODULE=on 
 $ go mod init github.com/yangpeng-chn/go-web-framework (go.mod generated)
-$ go mod vendor (go.mod updated, go.sum generated, vendor generated)
+$ go mod vendor (go.mod updated, go.sum generated, packages downloaded in $GOPATH/pkg, vendor generated with packages)
 ```
 
 **Dev mode**
@@ -69,7 +69,7 @@ $ go mod vendor (go.mod updated, go.sum generated, vendor generated)
 2. Start service with `realize` with hot-reload and without docker, database not available
 
 	```bash
-	$ vi conf/conf.json
+	$ vi conf.json
 	"UseDatabase": false,
 
 	$ GO111MODULE=off go get github.com/oxequa/realize
